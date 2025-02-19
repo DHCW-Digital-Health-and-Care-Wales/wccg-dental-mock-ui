@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCCG.DentalMockUI.Web", "src\WCCG.DentalMockUI.Web\WCCG.DentalMockUI.Web.csproj", "{C7305F63-5FE8-4443-A3E2-782E71A4CCD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCCG.DentalMock.UI", "src\WCCG.DentalMock.UI\WCCG.DentalMock.UI.csproj", "{C7305F63-5FE8-4443-A3E2-782E71A4CCD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCCG.DentalMockUI.Unit.Tests", "test\WCCG.DentalMockUI.Unit.Tests\WCCG.DentalMockUI.Unit.Tests.csproj", "{30A34BA8-C41C-4870-B930-8FD69E647247}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCCG.DentalMock.UI.Unit.Tests", "test\WCCG.DentalMock.UI.Unit.Tests\WCCG.DentalMock.UI.Unit.Tests.csproj", "{30A34BA8-C41C-4870-B930-8FD69E647247}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

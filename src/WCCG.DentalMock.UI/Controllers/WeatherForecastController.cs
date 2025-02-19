@@ -1,11 +1,13 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
-using WCCG.DentalMockUI.Web.Extensions;
 using WCCG.DentalMockUI.Web.Models;
+using LoggerExtensions = WCCG.DentalMock.UI.Extensions.LoggerExtensions;
 
-namespace WCCG.DentalMockUI.Web.Controllers;
+namespace WCCG.DentalMock.UI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[ExcludeFromCodeCoverage]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries =
@@ -23,7 +25,7 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
-        _logger.CalledMethod(nameof(Get));
+        LoggerExtensions.CalledMethod(_logger, nameof(Get));
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

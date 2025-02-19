@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace WCCG.DentalMockUI.Web.Extensions;
+namespace WCCG.DentalMock.UI.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static partial class LoggerExtensions

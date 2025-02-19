@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>WCCG.DentalMockUI.Unit.Tests</RootNamespace>
+    <RootNamespace>WCCG.DentalMock.UI.Unit.Tests</RootNamespace>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WCCG.DentalMockUI.Web\WCCG.DentalMockUI.Web.csproj" />
+    <ProjectReference Include="..\..\src\WCCG.DentalMock.UI\WCCG.DentalMock.UI.csproj" />
   </ItemGroup>
 
 </Project>
