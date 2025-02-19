@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-namespace WCCG.DentalMockUI.Unit.Tests.Example;
+namespace WCCG.DentalMock.UI.Unit.Tests.Example;
 
 public class UnitTest1
 {
