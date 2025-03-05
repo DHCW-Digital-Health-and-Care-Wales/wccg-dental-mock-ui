@@ -13,8 +13,7 @@ To configure the project, open user secrets file and configure ApimEndpoint and 
 ```
 {
   "EReferralsApi": {
-    "ApimEndpoint": "<YOUR_APIM_ENDPOINT>",
-    "ApimSubscriptionKey": "<YOUR_APIM_SUBSCRIPTION_KEY>"
+    "ApimEndpoint": "<YOUR_APIM_ENDPOINT>"
   }
 }
 ```
@@ -56,8 +55,8 @@ To run the project locally, follow these steps:
 1. Clone the repository.
 2. Don't forget `az login --tenant <YOUR_TENNANT>`
 3. Setup local configuration according to `Required configuration for local development` section
-2. Rebuild and run the project.
-6. Open your web browser and navigate to `https://localhost:xxxxx/swagger/index.html` to access the SwaggerUI with API endpoints.
+4. Rebuild and run the project.
+5. Open your web browser and navigate to `https://localhost:xxxxx/swagger/index.html` to access the SwaggerUI with API endpoints.
 
 ## API Endpoints
 Example payloads for POST endpoints can be found in the `Examples` folder. 
