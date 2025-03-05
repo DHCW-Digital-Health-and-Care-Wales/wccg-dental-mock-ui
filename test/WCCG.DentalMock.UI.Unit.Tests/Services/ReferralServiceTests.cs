@@ -1,7 +1,6 @@
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
@@ -61,8 +60,7 @@ public class ReferralServiceTests
         httpClient.BaseAddress = new Uri("https://some.com");
 
         var sut = new ReferralService(httpClient,
-            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object,
-            _fixture.Mock<ILogger<ReferralService>>().Object);
+            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object);
 
         //Act
         await sut.CreateReferralAsync(bundleJson, headers);
@@ -87,9 +85,7 @@ public class ReferralServiceTests
         var httpClient = mockHttp.ToHttpClient();
         httpClient.BaseAddress = new Uri("https://some.com");
 
-        var sut = new ReferralService(httpClient,
-            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object,
-            _fixture.Mock<ILogger<ReferralService>>().Object);
+        var sut = new ReferralService(httpClient, _fixture.Mock<IOptions<EReferralsApiConfig>>().Object);
 
         //Act
         var result = await sut.CreateReferralAsync(bundleJson, _fixture.Create<IHeaderDictionary>());

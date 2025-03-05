@@ -8,15 +8,11 @@ namespace WCCG.DentalMock.UI.Services;
 public class ReferralService : IReferralService
 {
     private readonly HttpClient _httpClient;
-    private readonly ILogger<ReferralService> _logger;
     private readonly EReferralsApiConfig _eReferralsApiConfig;
 
-    public ReferralService(HttpClient httpClient,
-        IOptions<EReferralsApiConfig> eReferralsApiOptions,
-        ILogger<ReferralService> logger)
+    public ReferralService(HttpClient httpClient, IOptions<EReferralsApiConfig> eReferralsApiOptions)
     {
         _httpClient = httpClient;
-        _logger = logger;
         _eReferralsApiConfig = eReferralsApiOptions.Value;
     }
 
