@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WCCG.DentalMock.UI.Constants;
 using WCCG.DentalMock.UI.Extensions;
 using WCCG.DentalMock.UI.Services;
 using WCCG.DentalMock.UI.Swagger;
@@ -12,9 +13,7 @@ public class ReferralsController : ControllerBase
     private readonly IReferralService _referralService;
     private readonly ILogger<ReferralsController> _logger;
 
-    public ReferralsController(
-        IReferralService referralService,
-        ILogger<ReferralsController> logger)
+    public ReferralsController(IReferralService referralService, ILogger<ReferralsController> logger)
     {
         _referralService = referralService;
         _logger = logger;
@@ -31,6 +30,11 @@ public class ReferralsController : ControllerBase
 
         var response = await _referralService.CreateReferralAsync(bundleJson, HttpContext.Request.Headers);
 
-        return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+        return new ContentResult
+        {
+            StatusCode = (int)response.StatusCode,
+            Content = await response.Content.ReadAsStringAsync(),
+            ContentType = FhirConstants.FhirMediaType
+        };
     }
 }

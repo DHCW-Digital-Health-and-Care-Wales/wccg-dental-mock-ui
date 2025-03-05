@@ -4,6 +4,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WCCG.DentalMock.UI.Constants;
 using WCCG.DentalMock.UI.Controllers;
 using WCCG.DentalMock.UI.Services;
 using WCCG.DentalMock.UI.Unit.Tests.Extensions;
@@ -51,9 +52,10 @@ public class ReferralsControllerTests
         var result = await _sut.CreateReferral();
 
         //Assert
-        var objectResult = result.Should().BeOfType<ObjectResult>().Subject;
+        var objectResult = result.Should().BeOfType<ContentResult>().Subject;
         objectResult.StatusCode.Should().Be((int)response.StatusCode);
-        objectResult.Value.Should().Be(await response.Content.ReadAsStringAsync());
+        objectResult.Content.Should().Be(await response.Content.ReadAsStringAsync());
+        objectResult.ContentType.Should().Be(FhirConstants.FhirMediaType);
     }
 
     private void SetRequestBody(string value)
