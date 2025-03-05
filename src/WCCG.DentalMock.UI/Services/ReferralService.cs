@@ -1,42 +1,40 @@
 using System.Net.Http.Headers;
-using System.Text.Json;
-using Hl7.Fhir.Model;
 using Microsoft.Extensions.Options;
 using WCCG.DentalMock.UI.Configuration;
 using WCCG.DentalMock.UI.Constants;
-using WCCG.DentalMock.UI.Exceptions;
+using WCCG.DentalMock.UI.Extensions;
 
 namespace WCCG.DentalMock.UI.Services;
 
 public class ReferralService : IReferralService
 {
     private readonly HttpClient _httpClient;
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly ILogger<ReferralService> _logger;
     private readonly EReferralsApiConfig _eReferralsApiConfig;
 
     public ReferralService(HttpClient httpClient,
-        JsonSerializerOptions jsonSerializerOptions,
-        IOptions<EReferralsApiConfig> eReferralsApiOptions)
+        IOptions<EReferralsApiConfig> eReferralsApiOptions,
+        ILogger<ReferralService> logger)
     {
         _httpClient = httpClient;
-        _jsonSerializerOptions = jsonSerializerOptions;
+        _logger = logger;
         _eReferralsApiConfig = eReferralsApiOptions.Value;
     }
 
-    public async Task<string> CreateReferralAsync(string bundleJson, IHeaderDictionary headersDictionary)
+    public async Task<HttpResponseMessage> CreateReferralAsync(string bundleJson, IHeaderDictionary headersDictionary)
     {
-        AddHeaders(_httpClient, headersDictionary);
-
-        var response = await _httpClient.PostAsync(_eReferralsApiConfig.CreateReferralEndpoint,
-            new StringContent(bundleJson, new MediaTypeHeaderValue(FhirConstants.FhirMediaType)));
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            return await response.Content.ReadAsStringAsync();
-        }
+            AddHeaders(_httpClient, headersDictionary);
 
-        var operationOutcome = await response.Content.ReadFromJsonAsync<OperationOutcome>(_jsonSerializerOptions);
-        throw new ReferralCreationException(response.StatusCode, operationOutcome!);
+            return await _httpClient.PostAsync(_eReferralsApiConfig.CreateReferralEndpoint,
+                new StringContent(bundleJson, new MediaTypeHeaderValue(FhirConstants.FhirMediaType)));
+        }
+        catch (Exception exception)
+        {
+            _logger.UnexpectedError(exception);
+            throw;
+        }
     }
 
     private static void AddHeaders(HttpClient client, IHeaderDictionary headersDictionary)

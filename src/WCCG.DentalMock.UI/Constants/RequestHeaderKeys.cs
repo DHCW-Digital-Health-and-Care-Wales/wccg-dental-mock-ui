@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace WCCG.DentalMock.UI.Constants;
 
+[ExcludeFromCodeCoverage]
 public static class RequestHeaderKeys
 {
     //Required

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using WCCG.DentalMock.UI.Constants;
 using WCCG.DentalMock.UI.Extensions;
 using WCCG.DentalMock.UI.Services;
 using WCCG.DentalMock.UI.Swagger;
@@ -30,13 +29,8 @@ public class ReferralsController : ControllerBase
         using var reader = new StreamReader(HttpContext.Request.Body);
         var bundleJson = await reader.ReadToEndAsync();
 
-        var outputBundleJson = await _referralService.CreateReferralAsync(bundleJson, HttpContext.Request.Headers);
+        var response = await _referralService.CreateReferralAsync(bundleJson, HttpContext.Request.Headers);
 
-        return new ContentResult
-        {
-            Content = outputBundleJson,
-            StatusCode = 200,
-            ContentType = FhirConstants.FhirMediaType
-        };
+        return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
     }
 }

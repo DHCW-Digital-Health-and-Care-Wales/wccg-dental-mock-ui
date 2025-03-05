@@ -4,7 +4,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WCCG.DentalMock.UI.Constants;
 using WCCG.DentalMock.UI.Controllers;
 using WCCG.DentalMock.UI.Services;
 using WCCG.DentalMock.UI.Unit.Tests.Extensions;
@@ -38,24 +37,23 @@ public class ReferralsControllerTests
     }
 
     [Fact]
-    public async Task CreateReferralShouldReturn200()
+    public async Task CreateReferralShouldReturnReceivedResponse()
     {
         //Arrange
         SetRequestBody(_fixture.Create<string>());
 
-        var outputBundleJson = _fixture.Create<string>();
+        var response = _fixture.Create<HttpResponseMessage>();
 
         _fixture.Mock<IReferralService>().Setup(x => x.CreateReferralAsync(It.IsAny<string>(), It.IsAny<IHeaderDictionary>()))
-            .ReturnsAsync(outputBundleJson);
+            .ReturnsAsync(response);
 
         //Act
         var result = await _sut.CreateReferral();
 
         //Assert
-        var contentResult = result.Should().BeOfType<ContentResult>().Subject;
-        contentResult.StatusCode.Should().Be(200);
-        contentResult.Content.Should().Be(outputBundleJson);
-        contentResult.ContentType.Should().Be(FhirConstants.FhirMediaType);
+        var objectResult = result.Should().BeOfType<ObjectResult>().Subject;
+        objectResult.StatusCode.Should().Be((int)response.StatusCode);
+        objectResult.Value.Should().Be(await response.Content.ReadAsStringAsync());
     }
 
     private void SetRequestBody(string value)

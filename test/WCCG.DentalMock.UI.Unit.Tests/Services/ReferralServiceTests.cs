@@ -1,19 +1,13 @@
-using System.Net;
-using System.Text.Json;
 using AutoFixture;
 using FluentAssertions;
-using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using RichardSzalay.MockHttp;
 using WCCG.DentalMock.UI.Configuration;
 using WCCG.DentalMock.UI.Constants;
-using WCCG.DentalMock.UI.Errors;
-using WCCG.DentalMock.UI.Exceptions;
-using WCCG.DentalMock.UI.Extensions;
-using WCCG.DentalMock.UI.Helpers;
 using WCCG.DentalMock.UI.Services;
 using WCCG.DentalMock.UI.Unit.Tests.Extensions;
 using Task = System.Threading.Tasks.Task;
@@ -66,8 +60,9 @@ public class ReferralServiceTests
         var httpClient = mockHttp.ToHttpClient();
         httpClient.BaseAddress = new Uri("https://some.com");
 
-        var sut = new ReferralService(httpClient, new JsonSerializerOptions().ForFhirExtended(),
-            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object);
+        var sut = new ReferralService(httpClient,
+            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object,
+            _fixture.Mock<ILogger<ReferralService>>().Object);
 
         //Act
         await sut.CreateReferralAsync(bundleJson, headers);
@@ -78,22 +73,23 @@ public class ReferralServiceTests
     }
 
     [Fact]
-    public async Task CreateReferralAsyncShouldReturnOutputBundleJson()
+    public async Task CreateReferralAsyncShouldReturnResponse()
     {
         //Arrange
         var bundleJson = _fixture.Create<string>();
-        var expectedResponse = _fixture.Create<string>();
+        var expectedResponse = _fixture.Create<HttpResponseMessage>();
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp.Expect(HttpMethod.Post, $"/{_eReferralsApiConfig.CreateReferralEndpoint}")
             .WithContent(bundleJson)
-            .Respond(FhirConstants.FhirMediaType, expectedResponse);
+            .Respond(_ => expectedResponse);
 
         var httpClient = mockHttp.ToHttpClient();
         httpClient.BaseAddress = new Uri("https://some.com");
 
-        var sut = new ReferralService(httpClient, new JsonSerializerOptions().ForFhirExtended(),
-            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object);
+        var sut = new ReferralService(httpClient,
+            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object,
+            _fixture.Mock<ILogger<ReferralService>>().Object);
 
         //Act
         var result = await sut.CreateReferralAsync(bundleJson, _fixture.Create<IHeaderDictionary>());
@@ -103,30 +99,28 @@ public class ReferralServiceTests
     }
 
     [Fact]
-    public async Task CreateReferralAsyncShouldThrowIfNotSuccessfulStatusCode()
+    public async Task CreateReferralAsyncShouldRethrowException()
     {
         //Arrange
         var bundleJson = _fixture.Create<string>();
-        var expectedResponse = OperationOutcomeCreator.CreateOperationOutcome(OperationOutcome.IssueType.Transient,
-            new UnexpectedExternalError(_fixture.Create<Exception>()));
-        var expectedResponseJson = JsonSerializer.Serialize(expectedResponse, new JsonSerializerOptions().ForFhirExtended());
+        var exception = _fixture.Create<Exception>();
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp.Expect(HttpMethod.Post, $"/{_eReferralsApiConfig.CreateReferralEndpoint}")
             .WithContent(bundleJson)
-            .Respond(HttpStatusCode.BadRequest, FhirConstants.FhirMediaType, expectedResponseJson);
+            .Throw(exception);
 
         var httpClient = mockHttp.ToHttpClient();
         httpClient.BaseAddress = new Uri("https://some.com");
 
-        var sut = new ReferralService(httpClient, new JsonSerializerOptions().ForFhirExtended(),
-            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object);
+        var sut = new ReferralService(httpClient,
+            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object,
+            _fixture.Mock<ILogger<ReferralService>>().Object);
 
         //Act
         var action = async () => await sut.CreateReferralAsync(bundleJson, _fixture.Create<IHeaderDictionary>());
 
         //Assert
-        await action.Should().ThrowAsync<ReferralCreationException>().Where(x =>
-            x.StatusCode == HttpStatusCode.BadRequest && x.OperationOutcome.Id == expectedResponse.Id);
+        await action.Should().ThrowAsync<Exception>().WithMessage(exception.Message);
     }
 }
