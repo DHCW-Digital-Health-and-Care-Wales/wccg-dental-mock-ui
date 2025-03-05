@@ -55,6 +55,6 @@ public static class RequestHeaderKeys
 
     public static string GetExampleValue(string headerName)
     {
-        return HeaderExamplesDictionary.GetValueOrDefault(headerName, "XXX");
+        return HeaderExamplesDictionary.GetValueOrDefault(headerName, string.Empty);
     }
 }

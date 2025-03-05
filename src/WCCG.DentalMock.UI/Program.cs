@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using WCCG.DentalMock.UI.Configuration;
 using WCCG.DentalMock.UI.Configuration.OptionValidators;
 using WCCG.DentalMock.UI.Extensions;
+using WCCG.DentalMock.UI.Middleware;
 using WCCG.DentalMock.UI.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,8 @@ builder.Services.AddHttpClients();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
+
+app.UseMiddleware<ResponseMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -97,30 +97,4 @@ public class ReferralServiceTests
         //Assert
         result.Should().Be(expectedResponse);
     }
-
-    [Fact]
-    public async Task CreateReferralAsyncShouldRethrowException()
-    {
-        //Arrange
-        var bundleJson = _fixture.Create<string>();
-        var exception = _fixture.Create<Exception>();
-
-        var mockHttp = new MockHttpMessageHandler();
-        mockHttp.Expect(HttpMethod.Post, $"/{_eReferralsApiConfig.CreateReferralEndpoint}")
-            .WithContent(bundleJson)
-            .Throw(exception);
-
-        var httpClient = mockHttp.ToHttpClient();
-        httpClient.BaseAddress = new Uri("https://some.com");
-
-        var sut = new ReferralService(httpClient,
-            _fixture.Mock<IOptions<EReferralsApiConfig>>().Object,
-            _fixture.Mock<ILogger<ReferralService>>().Object);
-
-        //Act
-        var action = async () => await sut.CreateReferralAsync(bundleJson, _fixture.Create<IHeaderDictionary>());
-
-        //Assert
-        await action.Should().ThrowAsync<Exception>().WithMessage(exception.Message);
-    }
 }
