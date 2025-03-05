@@ -1,8 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCCG.DentalMock.UI", "src\WCCG.DentalMock.UI\WCCG.DentalMock.UI.csproj", "{C7305F63-5FE8-4443-A3E2-782E71A4CCD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCCG.DentalMock.UI.Unit.Tests", "test\WCCG.DentalMock.UI.Unit.Tests\WCCG.DentalMock.UI.Unit.Tests.csproj", "{30A34BA8-C41C-4870-B930-8FD69E647247}"
@@ -21,8 +18,5 @@ Global
 		{30A34BA8-C41C-4870-B930-8FD69E647247}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30A34BA8-C41C-4870-B930-8FD69E647247}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30A34BA8-C41C-4870-B930-8FD69E647247}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
