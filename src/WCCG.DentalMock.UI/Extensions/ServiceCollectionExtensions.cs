@@ -36,7 +36,6 @@ public static class ServiceCollectionExtensions
         {
             var eReferralsApiConfig = provider.GetRequiredService<IOptions<EReferralsApiConfig>>().Value;
             client.BaseAddress = new Uri(eReferralsApiConfig.ApimEndpoint);
-            client.DefaultRequestHeaders.Add(eReferralsApiConfig.ApimSubscriptionHeaderName, eReferralsApiConfig.ApimSubscriptionKey);
             client.Timeout = TimeSpan.FromSeconds(eReferralsApiConfig.TimeoutSeconds);
         });
     }

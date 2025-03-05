@@ -12,12 +12,6 @@ public class EReferralsApiConfig
     public required string ApimEndpoint { get; set; }
 
     [Required]
-    public required string ApimSubscriptionHeaderName { get; init; }
-
-    [Required]
-    public required string ApimSubscriptionKey { get; init; }
-
-    [Required]
     public required string CreateReferralEndpoint { get; set; }
 
     [Required]

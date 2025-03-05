@@ -10,6 +10,7 @@ public static class RequestHeaderKeys
     public const string CorrelationId = "X-Correlation-Id";
     public const string UseContext = "use-context";
     public const string Accept = "Accept";
+    public const string ApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
 
     //Optional
     private const string RequestingPractitioner = "NHSD-Requesting-Practitioner";
@@ -33,7 +34,10 @@ public static class RequestHeaderKeys
 
     public static IEnumerable<string> GetAllRequired()
     {
-        return [TargetIdentifier, EndUserOrganisation, RequestingSoftware, RequestId, CorrelationId, UseContext, Accept];
+        return
+        [
+            ApimSubscriptionKey, TargetIdentifier, EndUserOrganisation, RequestingSoftware, RequestId, CorrelationId, UseContext, Accept
+        ];
     }
 
     public static IEnumerable<string> GetAllOptional()
