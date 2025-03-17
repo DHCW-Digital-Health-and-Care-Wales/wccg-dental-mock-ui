@@ -58,6 +58,40 @@ public class ReferralsControllerTests
         objectResult.ContentType.Should().Be(FhirConstants.FhirMediaType);
     }
 
+    [Fact]
+    public async Task GetReferralShouldCallGetReferralAsync()
+    {
+        //Arrange
+        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
+        var id = _fixture.Create<string>();
+
+        //Act
+        await _sut.GetReferral(id);
+
+        //Assert
+        _fixture.Mock<IReferralService>().Verify(x => x.GetReferralAsync(id, It.IsAny<IHeaderDictionary>()));
+    }
+
+    [Fact]
+    public async Task GetReferralShouldReturnReceivedResponse()
+    {
+        //Arrange
+        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
+        var response = _fixture.Create<HttpResponseMessage>();
+
+        _fixture.Mock<IReferralService>().Setup(x => x.GetReferralAsync(It.IsAny<string>(), It.IsAny<IHeaderDictionary>()))
+            .ReturnsAsync(response);
+
+        //Act
+        var result = await _sut.GetReferral(_fixture.Create<string>());
+
+        //Assert
+        var objectResult = result.Should().BeOfType<ContentResult>().Subject;
+        objectResult.StatusCode.Should().Be((int)response.StatusCode);
+        objectResult.Content.Should().Be(await response.Content.ReadAsStringAsync());
+        objectResult.ContentType.Should().Be(FhirConstants.FhirMediaType);
+    }
+
     private void SetRequestBody(string value)
     {
         _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };

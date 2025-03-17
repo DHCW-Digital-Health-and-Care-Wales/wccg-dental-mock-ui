@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.Options;
 using WCCG.DentalMock.UI.Configuration;
@@ -22,6 +23,14 @@ public class ReferralService : IReferralService
 
         return await _httpClient.PostAsync(_eReferralsApiConfig.CreateReferralEndpoint,
             new StringContent(bundleJson, new MediaTypeHeaderValue(FhirConstants.FhirMediaType)));
+    }
+
+    public async Task<HttpResponseMessage> GetReferralAsync(string referralId, IHeaderDictionary headersDictionary)
+    {
+        AddHeaders(_httpClient, headersDictionary);
+
+        var endpoint = string.Format(CultureInfo.InvariantCulture, _eReferralsApiConfig.GetReferralEndpoint, referralId);
+        return await _httpClient.GetAsync(endpoint);
     }
 
     private static void AddHeaders(HttpClient client, IHeaderDictionary headersDictionary)

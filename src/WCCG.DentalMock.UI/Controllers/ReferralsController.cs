@@ -19,7 +19,7 @@ public class ReferralsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("createReferral")]
+    [HttpPost]
     [SwaggerProcessMessageRequest]
     public async Task<IActionResult> CreateReferral()
     {
@@ -29,6 +29,22 @@ public class ReferralsController : ControllerBase
         var bundleJson = await reader.ReadToEndAsync();
 
         var response = await _referralService.CreateReferralAsync(bundleJson, HttpContext.Request.Headers);
+
+        return new ContentResult
+        {
+            StatusCode = (int)response.StatusCode,
+            Content = await response.Content.ReadAsStringAsync(),
+            ContentType = FhirConstants.FhirMediaType
+        };
+    }
+
+    [HttpGet("{referralId}")]
+    [SwaggerGetReferralRequest]
+    public async Task<IActionResult> GetReferral(string referralId)
+    {
+        _logger.CalledMethod(nameof(GetReferral));
+
+        var response = await _referralService.GetReferralAsync(referralId, HttpContext.Request.Headers);
 
         return new ContentResult
         {

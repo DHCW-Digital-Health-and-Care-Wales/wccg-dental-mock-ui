@@ -61,8 +61,14 @@ To run the project locally, follow these steps:
 ## API Endpoints
 Example payloads for POST endpoints can be found in the `Examples` folder. 
 
-### POST /api/Referrals/createReferral
+### POST /api/Referrals
 - Description: Creates a referral and returns enriched response 
 - Request body should be a valid FHIR Bundle JSON object. [Example Payload](./src/WCCG.DentalMock.UI/Examples/createReferral-example-payload.json)
 - Request should contain required header values described in [RequestHeaderKeys.cs](./src/WCCG.DentalMock.UI/Constants/RequestHeaderKeys.cs)
 - Response is also a FHIR Bundle but enriched with new values generated while the creation process
+
+### GET /api/Referrals/&#123;referralId&#125;
+- Description: Gets a referral by **referralId**.
+- Route parameter **referralId** should be a valid GUID.
+- Response is a FHIR Bundle generated based on database data.
+
