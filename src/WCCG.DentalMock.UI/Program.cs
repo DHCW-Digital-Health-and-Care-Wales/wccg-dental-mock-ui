@@ -16,7 +16,7 @@ builder.Services.AddSingleton<IValidateOptions<EReferralsApiConfig>, ValidateERe
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => { options.OperationFilter<SwaggerProcessMessageOperationFilter>(); });
+builder.Services.AddSwaggerGen(options => { options.OperationFilter<SwaggerOperationFilter>(); });
 
 builder.Services.AddHttpClients();
 builder.Services.AddHealthChecks();
