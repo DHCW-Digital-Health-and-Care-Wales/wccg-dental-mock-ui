@@ -54,7 +54,7 @@ public static class RequestHeaderKeys
 
     public static IEnumerable<string> GetAll()
     {
-        return [.. GetAllRequired(), .. GetAllOptional()];
+        return GetAllRequired().Concat(GetAllOptional());
     }
 
     public static string GetExampleValue(string headerName)
